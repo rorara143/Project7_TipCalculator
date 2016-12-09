@@ -112,12 +112,12 @@ public class TipCalculatorDB  extends SQLiteOpenHelper {
     }
 
     public void addTip(Tip tip) {
+        SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_ID, tip.getId());
         values.put(BILL_DATE, tip.getDateMillis());
         values.put(BILL_AMOUNT, tip.getBillAmount());
         values.put(TIP_PERCENT, tip.getTipPercent());
-        SQLiteDatabase db = getWritableDatabase();
         db.insert(TIP_CALCULATOR_TABLE, null, values);
         db.close();
     }
@@ -153,7 +153,7 @@ if (i == 1) {
     db.close();
 
 
-}else {
+
 }  return tips;
     }
 

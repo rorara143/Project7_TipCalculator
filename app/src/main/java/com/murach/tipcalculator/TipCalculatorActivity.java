@@ -2,6 +2,7 @@ package com.murach.tipcalculator;
 
 import java.text.NumberFormat;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -22,7 +23,7 @@ import static android.content.ContentValues.TAG;
 
 public class TipCalculatorActivity extends Activity
 implements OnEditorActionListener, OnClickListener {
-
+private static final String TAG ="monaMessage";
     // define variables for the widgets
     private EditText billAmountEditText;
     private TextView percentTextView;
@@ -84,7 +85,7 @@ implements OnEditorActionListener, OnClickListener {
     public void onResume() {
         super.onResume();
 Log.i(TAG, "in onResume getting data");
-        prefs = getPreferences(Activity.MODE_PRIVATE);
+
 
         // get the instance variables
         billAmountString = prefs.getString("billAmountString", "");
@@ -147,24 +148,33 @@ Log.i(TAG, "in onResume getting data");
         }
 
 
-    buttonsave.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        String bill = billAmountEditText.getText().toString();
-        String percent = percentTextView.getText().toString();
-        String tip = tipTextView.getText().toString();
-        String total = totalTextView.getText().toString();
+        buttonsave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        SharedPreferences.Editor editor = prefs.edit();
+                SharedPreferences prefs = getSharedPreferences("userinfo", Context.MODE_PRIVATE);
 
-        editor.putString(bill, bill);
-        editor.putString(percent, percent);
-        editor.putString(tip, tip);
-        editor.putString(total, total);
-        editor.commit();
-        Toast.makeText(TipCalculatorActivity.this, "Save", Toast.LENGTH_LONG).show();
+                SharedPreferences.Editor editor = prefs.edit();
+                // editor.putString("bill", billAmountEditText.getText().toString());
+                editor.putString("percent", percentTextView.getText().toString());
+                editor.putString("tip", tipTextView.getText().toString());
+                editor.putString("total", totalTextView.getText().toString());
+                editor.commit();
+                Toast.makeText(TipCalculatorActivity.this, "Save", Toast.LENGTH_LONG).show();
+            }
+
+            //print out the data
+            public void displayData(View view) {
+                SharedPreferences prefs = getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+                String bill = prefs.getString("bill", "");
+                String percent = prefs.getString("percent", "");
+                String tip = prefs.getString("tip", "");
+                String total = prefs.getString("total", "");
+
+            }
+        });
     }
-    });
-        }
+    }
 
-}
+
+
